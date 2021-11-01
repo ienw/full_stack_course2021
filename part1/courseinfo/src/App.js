@@ -29,28 +29,30 @@ const Content = (props) => {
 }
 
 const App = () => {
-  const [ counter, setCounter ] = useState(0)
+  const course = {
+    name: 'Half Stack application development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7
+      },
+      {
+        name: 'State of a component',
+        exercises: 14
+      }
+    ]
+  }
   
+
   return (
     <div>
-      <div>{counter}</div>
-      <button onClick={() => setCounter(counter + 10)}>
-        plus 10
-      </button>
-      <button onClick={() => setCounter(counter - 5)}>
-        minus 5      </button>
-      <button onClick={() => setCounter(0)}>
-        zero
-      </button>
-      <button onClick={() => setCounter(10000000)}>
-        one million
-      </button>
-      <button onClick={() => setCounter(counter*2)}>
-        double
-      </button>
-      <button onClick={() => setCounter(Math.round(Math.sqrt(counter)))}>
-        square root 
-      </button>
+      <Header course={course} />
+      <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
   )
 }

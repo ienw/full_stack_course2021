@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import axios from 'axios'
+
+
 
 const Filter = (props) => {
   return (
@@ -39,18 +42,23 @@ const Person = (props) => {
 
 
 const App = () => {
-  const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas', phone: '0123456' }
-  ]) 
+  const [ persons, setPersons ] = useState([]) 
   const [newName, setNewName] = useState('')
 
   const [newPhone, setNewPhone] = useState('')
 
   const [search, setSearch] = useState('')
 
-  const personsToShow = persons.filter(person => person.name.toLowerCase().includes(search.toLowerCase()))
+  React.useEffect(() => {
+    const promise = axios.get('http://localhost:3001/persons')
+    promise.then(response => {
+      console.log(response)
+      setPersons(response.data)
+    })
+  }, []);
 
-  
+
+  const personsToShow = persons.filter(person => person.name.toLowerCase().includes(search.toLowerCase()))
 
 
   const addSomething = (event) => {
@@ -77,7 +85,6 @@ const App = () => {
     setSearch(event.target.value)
   }
 
-console.log(persons)
   return (
     <div>
       <div>debug: {newName}</div>

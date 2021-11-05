@@ -17,14 +17,21 @@ const Results = (props) =>{
       <div>Capital {country.capital}</div>
       <div>Population {country.population}</div>
       <h2>languages</h2>
-      <ul>{Object.values(country.languages).map(language => <li>{language}</li>)}</ul>
+      <ul>{Object.values(country.languages).map(language => <li key={language}>{language}</li>)}</ul>
       <div><img src={country.flags.png} alt="flag" /></div>
       </>
     )
   }
 
-  return props.countries.map(con => <div>{con.name.common}</div>)
-}
+  return props.countries.map(con => (
+    <div key={con.cca2}>
+      {con.name.common}
+      <button onClick={() => props.setSearch(con.name.common)}>
+        show
+      </button>
+    </div>
+  )
+)}
 
 function App() {
 
@@ -53,7 +60,7 @@ function App() {
         find countries <input value={search} onChange={handleSearchChange}/>
       </div>
       {/*countriesToShow.length > 9 && <div>Too many matches, specify another filter</div>*/}
-      <Results countries={countriesToShow} />
+      <Results countries={countriesToShow} setSearch={setSearch} />
     </>
   );
 }

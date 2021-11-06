@@ -1,6 +1,31 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 
+const Weather = (props) => {
+  const [weatherInfo , setWeatherInfo] = useState(null)
+
+
+  React.useEffect(async () => {
+    const apiKey = "312663de61ddb53f7ab658c3941e8a59"
+    const result = await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${props.city}&appid=${apiKey}`)
+    setWeatherInfo(result.data)
+  }, []);
+
+  if(weatherInfo==null){
+    return <div>It's loading...</div>
+  } 
+
+  console.log(weatherInfo)
+  return (
+    <>
+      <h3>Weather in {props.city}</h3>
+      <div>temperature: {Math.round(weatherInfo.main.temp-272.15)}</div>
+      <div>weather: {weatherInfo.weather[0].description}</div>
+      <div>wind: {weatherInfo.wind.speed} mph direction {weatherInfo.wind.deg} degree</div>
+    </>
+  )
+}
+
 const Results = (props) =>{
   if(props.countries.length > 10) {
     return (
@@ -14,11 +39,12 @@ const Results = (props) =>{
     return(
       <>
       <h1>{country.name.common}</h1>
-      <div>Capital {country.capital}</div>
+      <div>Capital {country.capital[0]}</div>
       <div>Population {country.population}</div>
       <h2>languages</h2>
       <ul>{Object.values(country.languages).map(language => <li key={language}>{language}</li>)}</ul>
       <div><img src={country.flags.png} alt="flag" /></div>
+      <Weather city={country.capital[0]} />
       </>
     )
   }

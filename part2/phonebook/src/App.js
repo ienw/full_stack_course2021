@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import personsService from './services/persons'
+import './App.css'
 
 
 const Filter = (props) => {
@@ -44,14 +45,28 @@ const Person = (props) => {
   )
 }
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className="notification">
+      {message}
+    </div>
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
+
   const [newName, setNewName] = useState('')
 
   const [newPhone, setNewPhone] = useState('')
 
   const [search, setSearch] = useState('')
+
+  const [notification, setNotification] = useState(null)
 
   React.useEffect(() => {
     const promise = personsService.getAll()
@@ -84,13 +99,17 @@ const App = () => {
       if(msg2===true){
         return personsService
           .update(foundPerson.id, {...foundPerson, number: newPhone})
-          .then((response) => setPersons(persons.map(person => {
-            if (person.id == foundPerson.id) {
-              return response.data
-            } else {
-              return person
-            }
-          })))
+          .then((response) => {
+            setPersons(persons.map(person => {
+              if (person.id == foundPerson.id) {
+                return response.data
+              } else {
+                return person
+              }
+            }))
+            setNotification(`${foundPerson.name} has been updated`)
+            setTimeout(() => setNotification(null), 5000)
+          })
       }
     } else {
       const person = {name: newName, number: newPhone}
@@ -99,8 +118,9 @@ const App = () => {
       promise.then(response => {
         console.log(response)
         setPersons([...persons, response.data])
+        setNotification(`Added ${person.name}`)
+        setTimeout(() => setNotification(null), 5000)
       })
-
     }
   }
 
@@ -119,7 +139,7 @@ const App = () => {
 
   return (
     <div>
-      <div>debug: {newName}</div>
+      <Notification message={notification} />
       <h2>Phonebook</h2>
       <Filter search={search} handleSearchChange={handleSearchChange}/>
       <Personform 

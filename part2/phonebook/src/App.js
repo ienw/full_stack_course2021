@@ -37,7 +37,7 @@ const Persons = (props) => {
 const Person = (props) => {
   return (
     <>
-      <li>{props.person.name}{' '}{props.person.phone}{' '}
+      <li>{props.person.name}{' '}{props.person.number}{' '}
       <button onClick={() => props.removePerson(props.person)}>delete</button></li>
       
     </>
@@ -78,11 +78,22 @@ const App = () => {
   const addSomething = (event) => {
     event.preventDefault()
     console.log('button clicked', event.target)
-    const isSameName = persons.some(person => person.name === newName);
-    if (isSameName) {
-      window.alert(`${newName} is already added to phonebook`);
+    const foundPerson = persons.find(person => person.name === newName);
+    if (foundPerson) {
+      const msg2 = window.confirm(`${foundPerson.name} is already added to the phonebook, replace it with a new phone number?`)
+      if(msg2===true){
+        return personsService
+          .update(foundPerson.id, {...foundPerson, number: newPhone})
+          .then((response) => setPersons(persons.map(person => {
+            if (person.id == foundPerson.id) {
+              return response.data
+            } else {
+              return person
+            }
+          })))
+      }
     } else {
-      const person = {name: newName, phone: newPhone}
+      const person = {name: newName, number: newPhone}
       
       const promise = personsService.create(person)
       promise.then(response => {

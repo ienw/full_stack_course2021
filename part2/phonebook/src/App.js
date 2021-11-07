@@ -42,7 +42,7 @@ const Person = (props) => {
 
 
 const App = () => {
-  const [ persons, setPersons ] = useState([]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
 
   const [newPhone, setNewPhone] = useState('')
@@ -68,7 +68,14 @@ const App = () => {
     if (isSameName) {
       window.alert(`${newName} is already added to phonebook`);
     } else {
-      setPersons([...persons, {name: newName, phone: newPhone}])
+      const person = {name: newName, phone: newPhone}
+      setPersons([...persons, person])
+      
+      const promise = axios.post('http://localhost:3001/persons', person)
+      promise.then(response => {
+        console.log(response)
+      })
+
     }
   }
 

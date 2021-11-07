@@ -28,14 +28,19 @@ const Personform = (props) => {
 const Persons = (props) => {
   return(
     <div>
-      {props.personsToShow.map(person => <Person key={person.name} person={person}/>)}
+      {props.personsToShow.map(person => 
+        <Person key={person.name} person={person} removePerson={props.removePerson}/>)}
     </div>
   )
 }
 
 const Person = (props) => {
   return (
-    <li>{props.person.name}{' '}{props.person.phone}</li>
+    <>
+      <li>{props.person.name}{' '}{props.person.phone}{' '}
+      <button onClick={() => props.removePerson(props.person)}>delete</button></li>
+      
+    </>
   )
 }
 
@@ -59,6 +64,16 @@ const App = () => {
 
   const personsToShow = persons.filter(person => person.name.toLowerCase().includes(search.toLowerCase()))
 
+  const removePerson = (person) => {
+    const msg = window.confirm(`Delete ${person.name}`)
+    if(msg===true){
+      return personsService
+        .remove(person.id)
+        .then(() => setPersons(persons.filter((p) => p.id != person.id)))
+    }
+    
+  }
+
 
   const addSomething = (event) => {
     event.preventDefault()
@@ -68,11 +83,11 @@ const App = () => {
       window.alert(`${newName} is already added to phonebook`);
     } else {
       const person = {name: newName, phone: newPhone}
-      setPersons([...persons, person])
       
       const promise = personsService.create(person)
       promise.then(response => {
         console.log(response)
+        setPersons([...persons, response.data])
       })
 
     }
@@ -104,7 +119,7 @@ const App = () => {
         handlePhoneChange={handlePhoneChange}   
       />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow}/>
+      <Persons personsToShow={personsToShow} removePerson={removePerson}/> 
     </div>
   )
 }

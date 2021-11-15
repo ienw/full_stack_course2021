@@ -1,3 +1,4 @@
+const e = require('express')
 const express = require('express')
 const app = express()
 
@@ -33,6 +34,16 @@ app.get('/api/persons', (request, response) => {
   response.json(data)
 })
 
+app.get('/api/persons/:id', (request, response) => {
+  const person = data.find(p => {
+      return p.id == request.params.id
+  })
+  if (person) {
+    response.json(person)
+  } else {
+    response.status(404).end()
+  }
+})
 
 
 app.get('/info', (request, response) => {

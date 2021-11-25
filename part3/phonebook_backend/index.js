@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 app.use(express.json())
 const morgan = require('morgan')
+const cors = require('cors')
+app.use(cors())
 
 morgan.token('body', function (req, res) {
   return JSON.stringify(req.body)
@@ -83,7 +85,7 @@ app.post('/api/persons', (request, response) => {
   person.id = Math.round(Math.random()*10000000)
 
   data.push(person)
-  response.json(data)
+  response.json(person)
 
 
 })

@@ -101,7 +101,7 @@ const App = () => {
         .remove(person.id)
         .then(() => setPersons(persons.filter((p) => p.id != person.id)))
         .catch((e) => {
-          setError(`${person.name} can't be deleted. There's an error.`)
+          setError(e.response.data.error)
           setTimeout(() => setError(null), 5000)
         })
     }
@@ -130,7 +130,7 @@ const App = () => {
             setTimeout(() => setNotification(null), 5000)
           })
           .catch((e) => {
-            setError(`${foundPerson.name} can't be updated. There's an error.`)
+            setError(e.response.data.error)
             setTimeout(() => setError(null), 5000)
           })
       }
@@ -145,7 +145,8 @@ const App = () => {
         setTimeout(() => setNotification(null), 5000)
       })
       .catch((e) => {
-        setError(`${person.name} can't be added. There's an error.`)
+        console.log(e)
+        setError(e.response.data.error)
         setTimeout(() => setError(null), 5000)
       })
     }

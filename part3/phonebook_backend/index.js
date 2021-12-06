@@ -105,12 +105,6 @@ app.post('/api/persons', async (request, response, next) => {
     })
   } 
 
-  const allPeople = await Person.find({})
-  if(allPeople.find((n) => n.name == nameNnumber.name)){
-    return response.status(400).json({ 
-      error: 'name must be unique' 
-    })
-  }
 
   const person = new Person({
     name: nameNnumber.name,
@@ -129,10 +123,10 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
   if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } 
+    return response.status(400).json({ error: 'malformatted id' })
+  }
 
-  next(error)
+  return response.status(400).json({ error: error.message })  
 }
 
 // this has to be the last loaded middleware.

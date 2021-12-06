@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 app.use(express.json())
@@ -5,6 +6,8 @@ const morgan = require('morgan')
 const cors = require('cors')
 app.use(cors())
 app.use(express.static('build'))
+const Person = require('./models/person')
+
 
 morgan.token('body', function (req, res) {
   return JSON.stringify(req.body)
@@ -42,7 +45,7 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  response.json(data)
+  Person.find({}).then(result => response.json(result))
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -69,26 +72,32 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
-app.post('/api/persons', (request, response) => {
-  const person = { ...request.body }
+app.post('/api/persons', async (request, response) => {
+  const nameNnumber = { ...request.body }
   
-  if (!person.name || !person.number) {
+  if (!nameNnumber.name || !nameNnumber.number) {
     return response.status(400).json({ 
       error: 'name or number is missing' 
     })
   } 
 
-  if(data.find((n) => n.name == person.name)){
+  const allPeople = await Person.find({})
+  if(allPeople.find((n) => n.name == nameNnumber.name)){
     return response.status(400).json({ 
       error: 'name must be unique' 
     })
   }
-  person.id = Math.round(Math.random()*10000000)
 
-  data.push(person)
-  response.json(person)
+  const person = new Person({
+    name: nameNnumber.name,
+    number: nameNnumber.number
+  })
 
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 
+  // data.push(person)
 })
 
 

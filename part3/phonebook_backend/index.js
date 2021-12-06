@@ -65,11 +65,16 @@ app.get('/info', (request, response) => {
   response.send(`Phone book has info for ${data.length} people <br><br> ${now}`)
 })
 
-app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  data = data.filter(p => p.id !== id)
+app.delete('/api/persons/:id', async (request, response) => {
+  const id = request.params.id
 
-  response.status(204).end()
+  try{
+    const result = await Person.deleteOne({id:id})
+    response.status(204).end()
+  }catch(error){
+    response.status(400).json({ error })
+  }
+  
 })
 
 app.post('/api/persons', async (request, response) => {

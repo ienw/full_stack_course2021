@@ -6,8 +6,6 @@ test('dummy returns one', () => {
   expect(result).toBe(1)
 })
 
-
-
 describe('total likes', () => {
   const listWithOneBlog = [
     {
@@ -24,4 +22,34 @@ describe('total likes', () => {
     const result = listHelper.totalLikes(listWithOneBlog)
     expect(result).toBe(5)
   })
+})
+
+describe('favorite blog', () => {
+  const blogs = [
+    {
+      title: "Canonical string reduction",
+      author: "Edsger W. Dijkstra",
+      likes: 12
+    },
+    {
+      title: "Canonical string reduction2",
+      author: "Edsger W. Dijkstra",
+      likes: 10
+    },
+    {
+      title: "Canonical string reduction3",
+      author: "Edsger W. Dijkstra",
+      likes: 18
+    },
+  ]
+
+  test('when one blog has most likes, equals the blog', () => {
+    const result = listHelper.findFav(blogs)
+    expect(result).toEqual({
+      title: "Canonical string reduction3",
+      author: "Edsger W. Dijkstra",
+      likes: 18
+    })
+  })
+
 })

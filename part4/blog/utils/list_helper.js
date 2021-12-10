@@ -9,9 +9,22 @@ const totalLikes = (blogs) => {
 }
 
 
+const findFav = (blogs) => {
+  let favoriteBlog = { likes: 0 }
+
+  for (let blog of blogs) {
+    if(blog.likes > favoriteBlog.likes){
+      favoriteBlog = blog
+    }
+  }
+
+  return favoriteBlog
+}
+
+
 
 module.exports = {
   dummy,
-  totalLikes
-
+  totalLikes,
+  findFav
 }

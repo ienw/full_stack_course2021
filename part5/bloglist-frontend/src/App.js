@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Addblog from './components/Addblog'
 import Blog from './components/Blog'
 import Login from './components/Login'
 import Logout from './components/Logout'
@@ -26,6 +27,13 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  const handleCreate = async ({ title, author, url }) => {
+    console.log(title, author, url)
+    const result = await blogService.createBlog({author, title, url})
+    setBlogs([...blogs, result])
+    console.log(result)
+  }
 
   const handleLogout = async (event) => {
     event.preventDefault()
@@ -57,7 +65,9 @@ const App = () => {
   if (user) {
     return (
       <div>
+        <h1>Blogs</h1>
         {user.name} logged in
+        <Addblog onSubmit={handleCreate} />
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
         )}

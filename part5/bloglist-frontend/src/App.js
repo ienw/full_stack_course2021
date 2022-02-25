@@ -30,12 +30,16 @@ const App = () => {
     }
   }, [])
 
-  const handleCreate = async ({ title, author, url }) => {
+  const handleCreate = async ({ title, author, url, onFinish }) => {
     console.log(title, author, url)
     const result = await blogService.createBlog({author, title, url})
     setBlogs([...blogs, result])
     console.log(result)
     setSuccessMessage(`a new blog ${title} has been created! by ${author} added`)
+    setTimeout(() => {
+      setSuccessMessage(null)
+    }, 5000)
+    onFinish()
   }
 
   const handleLogout = async (event) => {

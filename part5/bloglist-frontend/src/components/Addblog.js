@@ -4,6 +4,15 @@ const Addblog =  ({ onSubmit }) => {
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [url, setUrl] = useState("")
+  const [click, setClick] = useState(true)
+
+  if (click) {
+    return (
+      <div>
+        <button onClick={()=>setClick(false)}>New note</button>
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -20,7 +29,16 @@ const Addblog =  ({ onSubmit }) => {
         <label>url:</label>
         <input value={url} onChange={e => setUrl(e.target.value)}></input>
       </div>
-      <button onClick={() => onSubmit({ title, author, url })}>create</button>
+      <button
+        onClick={() =>
+          onSubmit({ title, author, url, onFinish: () => setClick(true) })
+        }>
+          create
+        </button>
+      <div>
+      <button
+        onClick={() => setClick(true)}>cancel</button>
+      </div>
     </div>
   )
 }

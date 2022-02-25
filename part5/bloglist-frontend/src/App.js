@@ -5,12 +5,14 @@ import Login from './components/Login'
 import Logout from './components/Logout'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import "./App.css"
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -33,6 +35,7 @@ const App = () => {
     const result = await blogService.createBlog({author, title, url})
     setBlogs([...blogs, result])
     console.log(result)
+    setSuccessMessage(`a new blog ${title} has been created! by ${author} added`)
   }
 
   const handleLogout = async (event) => {
@@ -55,7 +58,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setErrorMessage('Wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -66,6 +69,7 @@ const App = () => {
     return (
       <div>
         <h1>Blogs</h1>
+        {successMessage && <div className="success">{successMessage}</div>}
         {user.name} logged in
         <Addblog onSubmit={handleCreate} />
         {blogs.map(blog =>
@@ -79,10 +83,13 @@ const App = () => {
   return (
     <form onSubmit={handleClicked}>
       <h2>log in to application</h2>
-      
-      <Login username={username} password={password} 
-      setUsername={setUsername} setPassword={setPassword}/>
-      {errorMessage && <div>{errorMessage}</div>}
+      {errorMessage && <div className="error">{errorMessage}</div>}
+      <Login
+        username={username}
+        password={password} 
+        setUsername={setUsername}
+        setPassword={setPassword}
+      />
     </form>
   )
 }

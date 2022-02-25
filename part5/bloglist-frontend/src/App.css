@@ -11,3 +11,11 @@
   padding: 8px;
   color: green;
 }
+
+.oneBlog {
+  border: purple 3px solid;
+  border-radius: 5px;
+  padding: 8px;
+  margin: 5px;
+  color: purple;
+}

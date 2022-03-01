@@ -52,6 +52,21 @@ const App = () => {
     onFinish()
   }
 
+  const handleLike = async (blog) => {
+    const result = await blogService.likeBlog(blog.id, blog.content)
+    console.log(result)
+
+    blogService.getAll().then(blogs => {
+      const sorting = blogs.sort((a, b) => {
+        const alikes = a.content.likes || 0
+        const blikes = b.content.likes || 0
+        return alikes < blikes ? 1 : -1
+      })
+
+      setBlogs(sorting)
+    })
+  }
+
   const handleLogout = async (event) => {
     event.preventDefault()
     window.localStorage.clear()
@@ -87,7 +102,7 @@ const App = () => {
         {user.name} logged in
         <Addblog onSubmit={handleCreate} />
         {(blogs || []).map(blog =>
-          <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />
+          <Blog key={blog.id} blog={blog} setBlogs={setBlogs} handleLike={handleLike}/>
         )}
         <Logout onSubmit={handleLogout}/>
       </div>

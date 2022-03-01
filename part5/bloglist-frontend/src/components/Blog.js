@@ -20,7 +20,7 @@ const Blog = ({ blog, setBlogs, handleLike }) => {
           <div>{blog.content.title}</div>
           <div>{blog.content.author}</div>
           <div>{blog.content.url}</div>
-          <div>{blog.content.likes}<button onClick={() => handleLike(blog)}>like</button></div>
+          <div data-testid="likes">{blog.content.likes}<button onClick={() => handleLike(blog)}>like</button></div>
           <div><button onClick={handleRemove}>remove</button></div>
         </>
       )}

@@ -16,9 +16,16 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
+    blogService.getAll().then(blogs => {
+
+      const sorting = blogs.sort((a, b) => {
+        const alikes = a.content.likes || 0
+        const blikes = b.content.likes || 0
+        return alikes < blikes ? 1 : -1
+      })
+
+      setBlogs(sorting)
+    })
   }, [])
 
   useEffect(() => {
@@ -29,6 +36,8 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  
 
 
   const handleCreate = async ({ title, author, url, onFinish }) => {
@@ -77,8 +86,8 @@ const App = () => {
         {successMessage && <div className="success">{successMessage}</div>}
         {user.name} logged in
         <Addblog onSubmit={handleCreate} />
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+        {(blogs || []).map(blog =>
+          <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />
         )}
       <Logout onSubmit={handleLogout}/>
       </div>

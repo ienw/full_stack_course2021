@@ -7,7 +7,7 @@ const setToken = newToken => {
   token = `bearer ${newToken}`
 }
 
-const likeBlog = (id, {title, author, url, likes}) => {
+const likeBlog = (id, { title, author, url, likes }) => {
   const request = axios.put(`${baseUrl}/${id}`,{
     content: {
       title,

@@ -5,12 +5,12 @@ import Login from './components/Login'
 import Logout from './components/Logout'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import "./App.css"
+import './App.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
   const [user, setUser] = useState(null)
@@ -37,12 +37,12 @@ const App = () => {
     }
   }, [])
 
-  
+
 
 
   const handleCreate = async ({ title, author, url, onFinish }) => {
     console.log(title, author, url)
-    const result = await blogService.createBlog({author, title, url})
+    const result = await blogService.createBlog({ author, title, url })
     setBlogs([...blogs, result])
     console.log(result)
     setSuccessMessage(`a new blog ${title} has been created! by ${author} added`)
@@ -61,13 +61,13 @@ const App = () => {
   const handleClicked = async (event) => {
     event.preventDefault()
     console.log('logging in with', username, password)
-    
+
     try {
       const user = await loginService.login(username, password)
       window.localStorage.setItem(
         'loggedNoteappUser', JSON.stringify(user)
       )
-      blogService.setToken(user.token) 
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -89,7 +89,7 @@ const App = () => {
         {(blogs || []).map(blog =>
           <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />
         )}
-      <Logout onSubmit={handleLogout}/>
+        <Logout onSubmit={handleLogout}/>
       </div>
     )
   }
@@ -100,7 +100,7 @@ const App = () => {
       {errorMessage && <div className="error">{errorMessage}</div>}
       <Login
         username={username}
-        password={password} 
+        password={password}
         setUsername={setUsername}
         setPassword={setPassword}
       />

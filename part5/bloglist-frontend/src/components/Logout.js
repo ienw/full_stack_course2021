@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Logout =  ({onSubmit}) => (
+const Logout =  ({ onSubmit }) => (
   <div>
     <button onClick={onSubmit}>logout</button>
   </div>

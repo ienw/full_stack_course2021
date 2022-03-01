@@ -1,18 +1,18 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({blog, setBlogs}) => {
+const Blog = ({ blog, setBlogs }) => {
   const [view, setView] = useState(false)
 
   const handleRemove = async () => {
-    const result = await blogService.deleteBlog(blog.id)
+    await blogService.deleteBlog(blog.id)
     setBlogs(blogs => blogs.filter((item) => item.id !== blog.id))
   }
 
   const handleLike = async () => {
     const result = await blogService.likeBlog(blog.id, blog.content)
     console.log(result)
-    
+
     blogService.getAll().then(blogs => {
       const sorting = blogs.sort((a, b) => {
         const alikes = a.content.likes || 0
@@ -22,13 +22,13 @@ const Blog = ({blog, setBlogs}) => {
 
       setBlogs(sorting)
     })
-    
-  } 
+
+  }
 
   return (
     <div className="oneBlog">
       {blog.content.title} {blog.content.author}
-      <button onClick={()=>{setView(!view)}}>{!view ? "view" : "hide"}</button>
+      <button onClick={() => {setView(!view)}}>{!view ? 'view' : 'hide'}</button>
       {view && (
         <>
           <div>{blog.content.title}</div>
@@ -38,7 +38,7 @@ const Blog = ({blog, setBlogs}) => {
           <div><button onClick={handleRemove}>remove</button></div>
         </>
       )}
-    </div>  
+    </div>
   )
 }
 

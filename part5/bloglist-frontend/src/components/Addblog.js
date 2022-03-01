@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 
+
 const Addblog =  ({ onSubmit }) => {
-  const [title, setTitle] = useState("")
-  const [author, setAuthor] = useState("")
-  const [url, setUrl] = useState("")
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
   const [click, setClick] = useState(true)
 
   if (click) {
     return (
       <div>
-        <button onClick={()=>setClick(false)}>New note</button>
+        <button onClick={() => setClick(false)}>New note</button>
       </div>
     )
   }
@@ -34,10 +35,10 @@ const Addblog =  ({ onSubmit }) => {
           onSubmit({ title, author, url, onFinish: () => setClick(true) })
         }>
           create
-        </button>
+      </button>
       <div>
-      <button
-        onClick={() => setClick(true)}>cancel</button>
+        <button
+          onClick={() => setClick(true)}>cancel</button>
       </div>
     </div>
   )
